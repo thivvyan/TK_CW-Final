@@ -8,21 +8,23 @@
 
 </head>
 
+
 <?php
 
 @include 'config.php';
 session_start();
 
-if (isset($_POST['login'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
   $username = stripslashes($_REQUEST['email']);
-  $username = mysqli_real_escape_string($con, $username);
+  $username = mysqli_real_escape_string($conn, $username);
   $password = stripslashes($_REQUEST['psw']);
-  $password = mysqli_real_escape_string($con, $password);
+  $password = mysqli_real_escape_string($conn, $password);
 
   $query = "SELECT * FROM `customers` WHERE username='$username' AND password='" . md5($password) . "'";
 
-  $result = mysqli_query($con, $query) or die();
+  $result = mysqli_query($conn, $query) or die();
+
   $rows = mysqli_num_rows($result);
 
   if ($rows == 1) {
@@ -35,6 +37,35 @@ if (isset($_POST['login'])) {
      <p class='link'>Click here to <a 
     href='login.php'>Login</a> again.</p>
      </div>";
+  }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
+  // Sanitize and escape inputs
+  $firstname = stripslashes($_POST['name']);
+  $firstname = mysqli_real_escape_string($conn, $firstname);
+  $address = stripslashes($_POST['address']);
+  $address = mysqli_real_escape_string($conn, $address);
+  $contact = stripslashes($_POST['contactNumber']);
+  $contact = mysqli_real_escape_string($conn, $contact);
+  $email = stripslashes($_POST['username']);
+  $email = mysqli_real_escape_string($conn, $email);
+  $password = stripslashes($_POST['password']);
+  $password = mysqli_real_escape_string($conn, $password);
+
+  // Insert into database
+  $query = "INSERT INTO `customers` (name, address, contactNumber, username, password) 
+            VALUES ('$firstname', '$address', '$contact', '$email', '" . md5($password) . "')";
+
+  $result = mysqli_query($conn, $query);
+
+  if ($result) {
+    header('location:cart.php');
+  } else {
+      echo "<div class='form'>
+              <h3>Registration failed. Please try again.</h3><br/>
+              <p class='link'>Click here to <a href='index.php'>register</a> again.</p>
+            </div>";
   }
 }
 
@@ -96,37 +127,37 @@ if (isset($_POST['login'])) {
       <label for="psw"><b>Password</b></label>
       <input type="password" placeholder="Enter Password" name="psw" required>
 
-      <button type="submit" class="btn">Login</button>
+      <button type="submit" class="btn" name="login">Login</button>
       <button type="button" class="btn cancel" onclick="closeLoginForm()">Close</button>
     </form>
   </div>
 
   <!-- Signup Button Form -->
   <div class="modal" id="signupForm">
-    <form action="/action_page.php" class="form-container">
+    <form method="post" class="form-container" name="register">
       <h1>Sign up</h1>
 
-      <label for="suFirstname"><b>First Name</b></label>
-      <input type="text" placeholder="Enter First Name" name="suFirstname" required>
+      <label for="name"><b>Name</b></label>
+      <input type="text" placeholder="Enter First Name" name="name" required>
 
-      <label for="suLastname"><b>LastName</b></label>
-      <input type="text" placeholder="Enter Last Name" name="suLastname" required>
+      <label for="address"><b>Address</b></label>
+      <input type="text" placeholder="Enter Address" name="address" required>
 
-      <label for="suContact"><b>Contact Number</b></label>
-      <input type="tel" placeholder="Enter Contact Number" name="suContact" required>
+      <label for="contactNumber"><b>Contact Number</b></label>
+      <input type="tel" placeholder="Enter Contact Number" name="contactNumber" required>
 
-      <label for="suEmail"><b>Email</b></label>
-      <input type="email" placeholder="Enter Email" name="suEmail" required>
+      <label for="username"><b>Email</b></label>
+      <input type="email" placeholder="Enter Email" name="username" required>
 
-      <label for="suPsw"><b>New Password</b></label>
-      <input type="password" placeholder="Enter Password" name="suPsw" id="suPsw" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+      <label for="password"><b>New Password</b></label>
+      <input type="password" placeholder="Enter Password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
         title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
         required>
 
       <label for="suVpsw"><b>Verify Password</b></label>
       <input type="password" placeholder="Verify Password" name="suVpsw" id="suVpsw" oninput="verifyPassword()" required>
 
-      <button type="submit" class="btn">Signup</button>
+      <button type="submit" class="btn" name="register">Signup</button>
       <button type="button" class="btn cancel" onclick="closeSignupForm()">Cancel</button>
     </form>
   </div>
@@ -150,7 +181,7 @@ if (isset($_POST['login'])) {
 
     function verifyPassword() {
       var input = document.getElementById('suVpsw');
-      if (input.value != document.getElementById('suPsw').value) {
+      if (input.value != document.getElementById('password').value) {
         input.setCustomValidity('Password Must be Matching.');
       } else {
         // input is valid -- reset the error message
