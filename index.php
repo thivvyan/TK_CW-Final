@@ -1,10 +1,7 @@
 <?php
-
 @include 'config.php';
-
-
 ?>
-  <?php include 'header.php'; ?>
+<?php include 'header.php'; ?>
 <!doctype html>
 <html lang="en">
 
@@ -13,6 +10,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Rare Finds</title>
   <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/style.css">
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
@@ -115,7 +114,7 @@
         <footer class="bg-dark text-white mt-4 p-4 text-center" style="width:auto; height: 100%;">>
           <p>&copy; 2024 Artefact Shop. All rights reserved.</p>
       </div>
-</footer>
+      </footer>
 
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"> </script>
