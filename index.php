@@ -11,7 +11,7 @@
   <title>Rare Finds</title>
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/style.css">
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
@@ -45,80 +45,66 @@
   <!--Carousel Close-->
   <!--Products-->
   <section class="container mt-5">
-    <h2 class="text-center" style="margin-top: 5%;">Our Collection</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-      <!-- Example Product Card -->
-      <div class="col" style="margin-top: 3%;">
-        <div class="card">
-          <img src="images/Artifacts01.png" class="card-img-top" alt="Artifact 1">
-          <div class="card-body">
-            <h5 class="card-title">Artifact Name</h5>
-            <p class="card-text">$100</p>
-            <button type="button" class="btn btn-primary" data-bs-toggle="popover" title="Artifact Details"
-              data-bs-content="More information about this artifact.">View Details</button>
-          </div>
-        </div>
-        <div class="card">
-          <img src="images/Artifacts01.png" class="card-img-top" alt="Artifact 1">
-          <div class="card-body">
-            <h5 class="card-title">Artifact Name</h5>
-            <p class="card-text">$100</p>
-            <button type="button" class="btn btn-primary" data-bs-toggle="popover" title="Artifact Details"
-              data-bs-content="More information about this artifact.">View Details</button>
-          </div>
-        </div>
-      </div>
-      <div class="col" style="margin-top: 3%;">
-        <div class="card">
-          <img src="images/Artifacts01.png" class="card-img-top" alt="Artifact 1">
-          <div class="card-body">
-            <h5 class="card-title">Artifact Name</h5>
-            <p class="card-text">$100</p>
-            <button type="button" class="btn btn-primary" data-bs-toggle="popover" title="Artifact Details"
-              data-bs-content="More information about this artifact.">View Details</button>
-          </div>
-          <div class="card">
-            <img src="images/Artifacts01.png" class="card-img-top" alt="Artifact 1">
-            <div class="card-body">
-              <h5 class="card-title">Artifact Name</h5>
-              <p class="card-text">$100</p>
-              <button type="button" class="btn btn-primary" data-bs-toggle="popover" title="Artifact Details"
-                data-bs-content="More information about this artifact.">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col" style="margin-top: 3%;">
-        <div class="card">
-          <img src="images/Artifacts01.png" class="card-img-top" alt="Artifact 1">
-          <div class="card-body">
-            <h5 class="card-title">Artifact Name</h5>
-            <p class="card-text">$100</p>
-            <button type="button" class="btn btn-primary" data-bs-toggle="popover" title="Artifact Details"
-              data-bs-content="More information about this artifact.">View Details</button>
-          </div>
-          <div class="card">
-            <img src="images/Artifacts01.png" class="card-img-top" alt="Artifact 1">
-            <div class="card-body">
-              <h5 class="card-title">Artifact Name</h5>
-              <p class="card-text">$100</p>
-              <button type="button" class="btn btn-primary" data-bs-toggle="popover" title="Artifact Details"
-                data-bs-content="More information about this artifact.">View Details</button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <?php
+    // Fetch the latest 9 products from the product table
+    $query = "SELECT * FROM `product` ORDER BY product_id DESC LIMIT 9";
+    $result = mysqli_query($conn, $query) or die();
+    $products = mysqli_fetch_assoc($result);
+    ?>
 
-      <!--Footer-->
-      <div class="container-fluid">
-        <footer class="bg-dark text-white mt-4 p-4 text-center" style="width:auto; height: 100%;">>
-          <p>&copy; 2024 Artefact Shop. All rights reserved.</p>
-      </div>
-      </footer>
 
-      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"> </script>
-      <script src="scripts.js"></script>
+    <div class="container">
+      <h2 class="text-center" style="margin-top: 5%;">Our Collection</h2>
+
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <?php
+        $select_products = mysqli_query($conn, "SELECT * FROM `product` ORDER BY product_id DESC LIMIT 9");
+        if (mysqli_num_rows($select_products) > 0) {
+          while ($product = mysqli_fetch_assoc($select_products)) {
+        ?>
+            <div class="col" style="margin-top: 3%;">
+              <div class="card h-100">
+              <img src="uploaded_img/<?php echo $product['image']; ?>" alt="" class="card-img-top" style="height:300px">
+                <div class="card-body">
+                  <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
+                  <p class="card-text">$<?php echo htmlspecialchars($product['price']); ?></p>
+                  <button type="button" class="btn btn-primary mt-auto">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+        <?php
+          }
+        } else {
+          echo "<p class='text-center'>No products found.</p>";
+        }
+        ?>
+      </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"> </script>
+    <script src="scripts.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Initialize the popover
+      var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+      var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl, {
+          trigger: 'focus', // Ensures popover closes when clicking outside
+        });
+      });
+    </script>
+
+  </section>
+
+  <!--Footer-->
+  <div class="container-fluid" style="width:100%;">
+    <footer class="bg-dark text-white mt-4 p-4 text-center" style="width:auto; height: 50px;">
+      <p>&copy; 2024 Artefact Shop. All rights reserved.</p>
+    </footer>
+  </div>
 
 </body>
 

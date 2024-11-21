@@ -44,6 +44,15 @@ section{
    margin-bottom: 2rem;
 }
 
+.btn-primary {
+   background-color: #212529 !important;
+   border-color: #212529 !important;
+}
+
+.btn-primary:hover {
+   background-color: #5d6063 !important;
+}
+
 .btn,
 .option-btn,
 .delete-btn{

@@ -8,10 +8,99 @@
 
 </head>
 
+<!-- Error Form -->
+<div class="modal" id="loginErrorForm">
+  <form class="form-container">
+    <h1>Error</h1>
+    <h3>Incorrect Username/password.</h3><br />
+    <p>Please try again.</p>
+    <button type="button" class="btn cancel" onclick="closeLoginError()">Close</button>
+  </form>
+</div>
+
+<script>
+  function openLoginError() {
+    document.getElementById("loginErrorForm").style.display = "flex";
+  }
+
+  function closeLoginError() {
+    document.getElementById("loginErrorForm").style.display = "none";
+  }
+</script>
+
 <?php
 
 @include 'config.php';
 session_start();
+
+if (isset($_SESSION['name'])) {
+  $isLoggedIn = true;
+} else {
+  $isLoggedIn = false;
+}
+
+if(isset($_GET['logout'])){
+  session_destroy();
+  header('location:index.php');
+};
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
+
+  $username = stripslashes($_REQUEST['email']);
+  $username = mysqli_real_escape_string($conn, $username);
+  $password = stripslashes($_REQUEST['psw']);
+  $password = mysqli_real_escape_string($conn, $password);
+
+  $query = "SELECT * FROM `customers` WHERE username='$username' AND password='" . md5($password) . "'";
+
+  $result = mysqli_query($conn, $query) or die();
+
+  $rows = mysqli_num_rows($result);
+
+  if ($rows == 1) {
+    $user = mysqli_fetch_assoc($result);
+
+    $_SESSION['username'] = $username;
+    $_SESSION['name'] = $user['name'];
+
+    $isLoggedIn = true;
+
+    // Redirect to user dashboard page
+    header("Location: index.php");
+  } else {
+    echo "<script>openLoginError();</script>";
+    $isLoggedIn = false;
+  }
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
+  // Sanitize and escape inputs
+  $firstname = stripslashes($_POST['name']);
+  $firstname = mysqli_real_escape_string($conn, $firstname);
+  $address = stripslashes($_POST['address']);
+  $address = mysqli_real_escape_string($conn, $address);
+  $contact = stripslashes($_POST['contactNumber']);
+  $contact = mysqli_real_escape_string($conn, $contact);
+  $email = stripslashes($_POST['username']);
+  $email = mysqli_real_escape_string($conn, $email);
+  $password = stripslashes($_POST['password']);
+  $password = mysqli_real_escape_string($conn, $password);
+
+  // Insert into database
+  $query = "INSERT INTO `customers` (name, address, contactNumber, username, password) 
+            VALUES ('$firstname', '$address', '$contact', '$email', '" . md5($password) . "')";
+
+  $result = mysqli_query($conn, $query);
+
+  if ($result) {
+    header('location:cart.php');
+  } else {
+    echo "<div class='form'>
+              <h3>Registration failed. Please try again.</h3><br/>
+              <p class='link'>Click here to <a href='index.php'>register</a> again.</p>
+            </div>";
+  }
+}
 
 ?>
 
@@ -26,14 +115,18 @@ session_start();
       <button class="header-btn btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
 
       <!-- Login Button -->
-      <button class="header-btn btn btn-outline-success my-2 my-sm-0" onclick="openLoginForm()" type="button">Login</button>
+      <button class="header-btn btn btn-outline-success my-2 my-sm-0 <?= ($isLoggedIn == true) ? 'display-none' : ''; ?>" onclick="openLoginForm()" type="button">Login</button>
 
       <!-- Signup Button -->
-      <button class="header-btn btn btn-outline-success my-2 my-sm-0" onclick="openSignupForm()" type="button">Signup</button>
+      <button class="header-btn btn btn-outline-success my-2 my-sm-0 <?= ($isLoggedIn == true) ? 'display-none' : ''; ?>" onclick="openSignupForm()" type="button">Signup</button>
 
-      <div class="header-logged-user">
-      <h2>Welcome <?php echo $_SESSION['name'] ?></h2>
+      <div class="header-logged-user <?= ($isLoggedIn == true) ? '' : 'display-none'; ?>" style="margin-left: 20px;">
+        <h2>Welcome <?php echo $_SESSION['name'] ?></h2>
       </div>
+
+      <a href="index.php?logout" class="logout-button <?= ($isLoggedIn == true) ? '' : 'display-none'; ?>" onclick="return confirm('Are you sure you want to logout?')">
+        <img src="images/icon_logout.png" alt="Logout Icon"> Logout
+      </a>
 
     </form>
   </div>
@@ -57,7 +150,7 @@ session_start();
         <a href="product.php"> View Products</a>
         <a href="contactus.php">Contact Us</a>
       </div>
-      <div class="right">
+      <div class="right <?= ($isLoggedIn == true) ? '' : 'display-none'; ?>">
         <a href="cart.php">cart <span><?php echo $row_count; ?></span> </a>
       </div>
     </nav>
@@ -117,16 +210,6 @@ session_start();
     </form>
   </div>
 
-  <!-- Error Form -->
-  <div class="modal" id="loginErrorForm">
-    <form class="form-container">
-      <h1>Error</h1>
-      <h3>Incorrect Username/password.</h3><br />
-      <p>Please try again.</p>
-      <button type="button" class="btn cancel" onclick="closeLoginError()">Close</button>
-    </form>
-  </div>
-
   <script>
     function openLoginForm() {
       document.getElementById("loginForm").style.display = "flex";
@@ -144,14 +227,6 @@ session_start();
       document.getElementById("signupForm").style.display = "none";
     }
 
-    function openLoginError() {
-      document.getElementById("loginErrorForm").style.display = "flex";
-    }
-
-    function closeLoginError() {
-      document.getElementById("loginErrorForm").style.display = "none";
-    }
-
     function verifyPassword() {
       var input = document.getElementById('suVpsw');
       if (input.value != document.getElementById('password').value) {
@@ -163,73 +238,3 @@ session_start();
     }
   </script>
 </body>
-
-<?php
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-
-  $username = stripslashes($_REQUEST['email']);
-  $username = mysqli_real_escape_string($conn, $username);
-  $password = stripslashes($_REQUEST['psw']);
-  $password = mysqli_real_escape_string($conn, $password);
-
-  $query = "SELECT * FROM `customers` WHERE username='$username' AND password='" . md5($password) . "'";
-
-  $result = mysqli_query($conn, $query) or die();
-
-  $rows = mysqli_num_rows($result);
-
-  if ($rows == 1) {
-    $user = mysqli_fetch_assoc($result);
-
-    $_SESSION['username'] = $username;
-    $_SESSION['name'] = $user['name'];
-
-    // Redirect to user dashboard page
-    header("Location: index.php");
-  } else {
-    echo "<script>openLoginError();</script>";
-    // echo '<script>alert("Incorrect username/password. Please try again")</script>';
-
-    // echo "<div class='error-modal' id='loginErrorForm'>
-    //         <form class='form-container'>
-    //           <h1>Error</h1>
-    //           <h3>Incorrect Username/password.</h3><br />
-    //           <p>Please try again.</p>
-    //           <button type='submit' class='btn' name='close'>Close</button>
-    //           <button type='button' class='btn cancel' onclick='closeLoginForm()'>Close</button>
-    //         </form>
-    //       </div>";
-  }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
-  // Sanitize and escape inputs
-  $firstname = stripslashes($_POST['name']);
-  $firstname = mysqli_real_escape_string($conn, $firstname);
-  $address = stripslashes($_POST['address']);
-  $address = mysqli_real_escape_string($conn, $address);
-  $contact = stripslashes($_POST['contactNumber']);
-  $contact = mysqli_real_escape_string($conn, $contact);
-  $email = stripslashes($_POST['username']);
-  $email = mysqli_real_escape_string($conn, $email);
-  $password = stripslashes($_POST['password']);
-  $password = mysqli_real_escape_string($conn, $password);
-
-  // Insert into database
-  $query = "INSERT INTO `customers` (name, address, contactNumber, username, password) 
-            VALUES ('$firstname', '$address', '$contact', '$email', '" . md5($password) . "')";
-
-  $result = mysqli_query($conn, $query);
-
-  if ($result) {
-    header('location:cart.php');
-  } else {
-    echo "<div class='form'>
-              <h3>Registration failed. Please try again.</h3><br/>
-              <p class='link'>Click here to <a href='index.php'>register</a> again.</p>
-            </div>";
-  }
-}
-
-?>

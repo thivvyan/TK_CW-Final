@@ -74,7 +74,7 @@
 
 /*navigation bar*/
 .header {
-   background-color: lightslategray; /*var(--blue);*/
+   background-color: #212529; /*var(--blue);*/
    position: sticky;
    top: 0;
    left: 0;
@@ -101,7 +101,7 @@
    color: var(--white);
    display: inline-block;
    padding: 10px 20px;
-   background-color: blue;
+   background-color: rgb(104, 104, 104);
    color: white;
    text-decoration: none;
    border-radius: 5px;
@@ -116,7 +116,7 @@
 }
 
 .header .flex .navbar a:hover {
-   background-color: lightblue;
+   background-color: rgb(153, 153, 153);
 }
 
 .header .flex .navbar span {
@@ -148,6 +148,30 @@
    display: none;
 }
 
+.display-none {
+   display: none !important;
+}
+
+.logout-button {
+   display: flex;
+   align-items: center;
+   color: black;
+   padding: 10px 15px;
+   border: none;
+   border-radius: 5px;
+   font-size: 16px;
+   cursor: pointer;
+   text-decoration: none;
+   justify-content: end !important;
+}
+.logout-button:hover {
+   background-color: #0056b3;
+}
+.logout-button img {
+   width: 20px;
+   height: 20px;
+   margin-right: 10px;
+}
 
 
 
