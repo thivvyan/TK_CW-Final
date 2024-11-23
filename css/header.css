@@ -165,7 +165,13 @@
    justify-content: end !important;
 }
 .logout-button:hover {
+<<<<<<< HEAD
+   background-color: #212529 !important;
+   border-color: #212529 !important;
+   color: white;
+=======
    background-color: #0056b3;
+>>>>>>> abf27df7863ee12a8b8f192fa73606fb0078608b
 }
 .logout-button img {
    width: 20px;

@@ -1,23 +1,48 @@
 <?php
 @include 'config.php';
+
+if (isset($_POST['add_to_cart'])) {
+  $product_name = $_POST['product_name'];
+  $product_price = $_POST['product_price'];
+  $product_image = $_POST['product_image'];
+  $product_quantity = 1;
+
+  $select_cart = mysqli_query($conn, "SELECT * FROM `shopping_cart` WHERE name = '$product_name'");
+
+  if (mysqli_num_rows($select_cart) > 0) {
+    $message[] = 'product already added to cart';
+  } else {
+    $insert_product = mysqli_query($conn, "INSERT INTO `shopping_cart`(name, price, image, quantity) VALUES('$product_name', '$product_price', '$product_image', '$product_quantity')");
+    $message[] = 'product added to cart successfully';
+  }
+}
 ?>
 <?php include 'header.php'; ?>
 <!doctype html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rare Finds</title>
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://www.w3schools.com/w3css/4/w3.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/style.css">
+<<<<<<< HEAD
+=======
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+>>>>>>> abf27df7863ee12a8b8f192fa73606fb0078608b
 </head>
 
 <body>
-
   <!--Carousel-->
   <div id="carouselExample" class="carousel slide" style="background-color: #777;">
     <div class="carousel-inner"
@@ -43,6 +68,15 @@
   </div>
 
   <!--Carousel Close-->
+
+  <?php
+  if (isset($message)) {
+    foreach ($message as $message) {
+      echo '<div class="message"><span>' . $message . '</span> <i class="fas fa-times" onclick="this.parentElement.style.display = `none`;"></i></div>';
+    }
+  }
+  ?>
+
   <!--Products-->
   <section class="container mt-5">
     <?php
@@ -81,6 +115,41 @@
       </div>
     </div>
 
+<<<<<<< HEAD
+    <script>
+      function addToCartClicked(name, price, image, isLoggedIn) {
+        if (isLoggedIn == false){
+          document.getElementById("login").click();
+          return;
+        }
+        const formData = new URLSearchParams();
+        formData.append('add_to_cart', true);
+        formData.append('product_name', name);
+        formData.append('product_price', price);
+        formData.append('product_image', image);
+
+        fetch('index.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData.toString(),
+          })
+          .then(data => {
+            // if (data.success) {
+            //   buttonElement.textContent = 'Added to Cart';
+            //   buttonElement.disabled = true;
+            // } else {
+            //   alert(data.message);
+            // }
+            location.reload();
+          })
+          .catch(error => console.error('Error:', error));
+      }
+    </script>
+
+=======
+>>>>>>> abf27df7863ee12a8b8f192fa73606fb0078608b
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"> </script>
