@@ -34,12 +34,6 @@ if (isset($_POST['add_to_cart'])) {
 
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/style.css">
-<<<<<<< HEAD
-=======
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
->>>>>>> abf27df7863ee12a8b8f192fa73606fb0078608b
 </head>
 
 <body>
@@ -95,14 +89,23 @@ if (isset($_POST['add_to_cart'])) {
         $select_products = mysqli_query($conn, "SELECT * FROM `product` ORDER BY product_id DESC LIMIT 9");
         if (mysqli_num_rows($select_products) > 0) {
           while ($product = mysqli_fetch_assoc($select_products)) {
+
+            $itemName = $product['name'];
+            $item = mysqli_query($conn, "SELECT * FROM `shopping_cart` WHERE name = '$itemName'");
+
+            if (mysqli_num_rows($item) > 0) {
+              $itemAddedToCart = true;
+            } else {
+              $itemAddedToCart = false;
+            }
         ?>
             <div class="col" style="margin-top: 3%;">
               <div class="card h-100">
-              <img src="uploaded_img/<?php echo $product['image']; ?>" alt="" class="card-img-top" style="height:300px">
+                <img src="uploaded_img/<?php echo $product['image']; ?>" alt="" class="card-img-top" style="height:300px">
                 <div class="card-body">
                   <h5 class="card-title"><?php echo htmlspecialchars($product['name']); ?></h5>
                   <p class="card-text">$<?php echo htmlspecialchars($product['price']); ?></p>
-                  <button type="button" class="btn btn-primary mt-auto">Add to Cart</button>
+                  <button type="button" class="btn btn-primary mt-auto" onclick="addToCartClicked('<?php echo $product['name']; ?>', '<?php echo $product['price']; ?>', '<?php echo $product['image']; ?>', '<?php echo $isLoggedIn; ?>')"><?php echo ($itemAddedToCart == true) ? 'Added to cart' : 'Add to cart'; ?></button>
                 </div>
               </div>
             </div>
@@ -115,7 +118,6 @@ if (isset($_POST['add_to_cart'])) {
       </div>
     </div>
 
-<<<<<<< HEAD
     <script>
       function addToCartClicked(name, price, image, isLoggedIn) {
         if (isLoggedIn == false){
@@ -148,8 +150,6 @@ if (isset($_POST['add_to_cart'])) {
       }
     </script>
 
-=======
->>>>>>> abf27df7863ee12a8b8f192fa73606fb0078608b
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"> </script>

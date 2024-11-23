@@ -40,8 +40,11 @@ if (isset($_SESSION['name'])) {
   $isLoggedIn = false;
 }
 
-if(isset($_GET['logout'])){
+if (isset($_GET['logout'])) {
   session_destroy();
+
+  mysqli_query($conn, "DELETE FROM `shopping_cart`") or die('query failed');
+
   header('location:index.php');
 };
 
@@ -107,7 +110,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
 <!---Header Yo -->
 <div class="container">
-<<<<<<< HEAD
   <div class="d-flex justify-content-between align-items-center" style="margin-bottom:5px;">
     <img src="images/logo1.png" alt="logo" style="float:left; width: 150px; height:60px;padding-bottom: 5px;margin-top:5px;">
     <form action="product.php" method="POST" class="form-inline d-flex align-items-center" style="width:100%; margin-top:5px;">
@@ -118,18 +120,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 
       <!-- Login Button -->
       <button id="login" class="header-btn btn btn-outline-success my-2 my-sm-0 <?= ($isLoggedIn == true) ? 'display-none' : ''; ?>" onclick="openLoginForm()" type="button">Login</button>
-=======
-  <div class="d-flex justify-content-between" style="margin-bottom:5px;">
-    <img src="images/logo1.png" alt="logo" style="float:left; width: 150px; height:60px;padding-bottom: 5px;margin-top:5px;">
-    <form class="form-inline d-flex align-items-center" style="width:100%; margin-top:5px;">
-
-      <!-- Search Button -->
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" style="width: 100%; height: 50px; margin-left: 20px;">
-      <button class="header-btn btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-
-      <!-- Login Button -->
-      <button class="header-btn btn btn-outline-success my-2 my-sm-0 <?= ($isLoggedIn == true) ? 'display-none' : ''; ?>" onclick="openLoginForm()" type="button">Login</button>
->>>>>>> abf27df7863ee12a8b8f192fa73606fb0078608b
 
       <!-- Signup Button -->
       <button class="header-btn btn btn-outline-success my-2 my-sm-0 <?= ($isLoggedIn == true) ? 'display-none' : ''; ?>" onclick="openSignupForm()" type="button">Signup</button>
@@ -162,11 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
       <div class="left">
         <a href="index.php"> Home </a>
         <a href="product.php"> View Products</a>
-<<<<<<< HEAD
         <a href="contact.php">Contact Us</a>
-=======
-        <a href="contactus.php">Contact Us</a>
->>>>>>> abf27df7863ee12a8b8f192fa73606fb0078608b
       </div>
       <div class="right <?= ($isLoggedIn == true) ? '' : 'display-none'; ?>">
         <a href="cart.php">cart <span><?php echo $row_count; ?></span> </a>
