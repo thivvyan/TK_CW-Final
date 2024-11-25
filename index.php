@@ -40,15 +40,15 @@ if (isset($_POST['add_to_cart'])) {
   <!--Carousel-->
   <div id="carouselExample" class="carousel slide" style="background-color: #777;">
     <div class="carousel-inner"
-      style="background-color: #777; object-fit:contain; margin-left: auto; margin-right: auto;">
+      style="background-color: #777; object-fit:cover; margin-left: auto; margin-right: auto;">
       <div class="carousel-item active">
-        <img src="Images/Artifacts01.png" class="d-block w-100;" style="object-fit:contain;" alt="Artefact 01">
+        <img src="Images/cover2.png" class="d-block w-100" style="object-fit:cover;" alt="Artefact 01">
       </div>
       <div class="carousel-item">
-        <img src="Images/Artifacts02.png" class="d-block w-100" style="object-fit:contain;" alt="Aretefact 02">
+        <img src="Images/cover1.png" class="d-block w-100" style="object-fit:cover;" alt="Aretefact 02">
       </div>
       <div class="carousel-item">
-        <img src="Images/Artifacts03.png" class="d-block w-100" style="object-fit:contain;" alt="Aretefact 03">
+        <img src="Images/cover3.png" class="d-block w-100" style="object-fit:cover;" alt="Aretefact 03">
       </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -82,7 +82,7 @@ if (isset($_POST['add_to_cart'])) {
 
 
     <div class="container">
-      <h2 class="text-center" style="margin-top: 5%;">Our Collection</h2>
+      <h2 class="text-center" style="margin-top: 5%;">Recent Additions</h2>
 
       <div class="row row-cols-1 row-cols-md-3 g-4">
         <?php
