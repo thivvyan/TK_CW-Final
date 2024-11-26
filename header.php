@@ -111,7 +111,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 <!---Header Yo -->
 <div class="container">
   <div class="d-flex justify-content-between align-items-center" style="margin-bottom:5px;">
-    <img src="images/logo1.png" alt="logo" style="float:left; width: 150px; height:60px;padding-bottom: 5px;margin-top:5px;">
+  <a href="index.php" target="_blank">
+  <img src="images/logo1.png" alt="logo" style="float:left; width: 150px; height:60px;padding-bottom: 5px;margin-top:5px;">
+</a>
     <form action="product.php" method="POST" class="form-inline d-flex align-items-center" style="width:100%; margin-top:5px;">
 
       <!-- Search Button -->

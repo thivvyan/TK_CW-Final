@@ -87,7 +87,7 @@
     <!--Footer-->
     <div class="container-fluid" style="width:100%;">
       <footer class="bg-dark text-white mt-4 p-4 text-center" style="width:auto; height: 50px;">
-        <p>&copy; 2024 Artefact Shop. All rights reserved.</p>
+        <p>&copy; 2024 Artefact Shop - Rare Finds. All rights reserved.</p>
       </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>

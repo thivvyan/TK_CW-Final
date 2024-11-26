@@ -58,7 +58,7 @@ if (isset($_POST['search_query']) && !empty(trim($_POST['search_query']))) {
     <div class="container">
         <section class="products">
             <h1 class="heading">
-                <?php echo !empty($search_query) ? "Search Results for '$search_query'" : "Latest Products"; ?>
+                <?php echo !empty($search_query) ? "Search Results for '$search_query'" : "Our Products"; ?>
             </h1>
 
             <div class="box-container">
@@ -99,7 +99,7 @@ if (isset($_POST['search_query']) && !empty(trim($_POST['search_query']))) {
     <!--Footer-->
     <div class="container-fluid" style="width:100%;">
         <footer class="bg-dark text-white mt-4 p-4 text-center" style="width:auto; height: 50px;">
-            <p>&copy; 2024 Artefact Shop. All rights reserved.</p>
+            <p>&copy; 2024 Artefact Shop - Rare Finds. All rights reserved.</p>
         </footer>
     </div>
 
