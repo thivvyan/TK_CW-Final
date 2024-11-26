@@ -83,7 +83,8 @@ if (isset($_POST['search_query']) && !empty(trim($_POST['search_query']))) {
                                 <input type="hidden" name="product_name" value="<?php echo $fetch_product['name']; ?>">
                                 <input type="hidden" name="product_price" value="<?php echo $fetch_product['price']; ?>">
                                 <input type="hidden" name="product_image" value="<?php echo $fetch_product['image']; ?>">
-                                <input type="submit" class="btn btn-primary" value="<?php echo ($itemAddedToCart == true) ? 'Added to cart' : 'Add to cart'; ?>" name="add_to_cart">
+                                
+                                <button type="button" class="btn btn-primary mt-auto" onclick="addToCartClicked('<?php echo $fetch_product['name']; ?>', '<?php echo $fetch_product['price']; ?>', '<?php echo $fetch_product['image']; ?>', '<?php echo $isLoggedIn; ?>')"><?php echo ($itemAddedToCart == true) ? 'Added to cart' : 'Add to cart'; ?></button>
                             </div>
                         </form>
                 <?php
@@ -95,6 +96,32 @@ if (isset($_POST['search_query']) && !empty(trim($_POST['search_query']))) {
             </div>
         </section>
     </div>
+
+    <script>
+      function addToCartClicked(name, price, image, isLoggedIn) {
+        if (isLoggedIn == false){
+          document.getElementById("login").click();
+          return;
+        }
+        const formData = new URLSearchParams();
+        formData.append('add_to_cart', true);
+        formData.append('product_name', name);
+        formData.append('product_price', price);
+        formData.append('product_image', image);
+
+        fetch('product.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData.toString(),
+          })
+          .then(data => {
+            location.reload();
+          })
+          .catch(error => console.error('Error:', error));
+      }
+    </script>
 
     <!--Footer-->
     <div class="container-fluid" style="width:100%;">

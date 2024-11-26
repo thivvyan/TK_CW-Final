@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
   $result = mysqli_query($conn, $query);
 
   if ($result) {
-    header('location:cart.php');
+    header('location:index.php');
   } else {
     echo "<div class='form'>
               <h3>Registration failed. Please try again.</h3><br/>

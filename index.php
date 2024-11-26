@@ -138,12 +138,6 @@ if (isset($_POST['add_to_cart'])) {
             body: formData.toString(),
           })
           .then(data => {
-            // if (data.success) {
-            //   buttonElement.textContent = 'Added to Cart';
-            //   buttonElement.disabled = true;
-            // } else {
-            //   alert(data.message);
-            // }
             location.reload();
           })
           .catch(error => console.error('Error:', error));
